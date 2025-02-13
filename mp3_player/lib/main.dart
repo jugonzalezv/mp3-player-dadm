@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'songs.dart';
+import "player.dart";
 
 void main() {
   runApp(const MainApp());
@@ -38,8 +39,13 @@ class HomeScreen extends StatelessWidget {
             );
           },
           child: const Text('Ver la lista de todas las canciones'),
-        ),
-      ),
+    // return const MaterialApp(
+    //   home: Scaffold(
+    //     body: Center(
+    //       child: MusicPlayerView(),
+    //     ),
+          ),
+        )
     );
   }
 }

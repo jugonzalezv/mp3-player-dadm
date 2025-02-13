@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
+import "player.dart";
 
 class SongsScreen extends StatefulWidget {
   const SongsScreen({super.key});
@@ -60,9 +61,17 @@ class _SongsScreenState extends State<SongsScreen> {
 
   
   void _playFile(FileSystemEntity file) {
+    // print("file-------------");
+    // print(file.path.split('/').last);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Reproduciendo: ${file.path.split('/').last}')),
     );
+     Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MusicPlayerView(file, fileName: file,),
+      ),
+    );   
   }
 
   void _addToFavorites(FileSystemEntity file) {
