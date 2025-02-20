@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'songs.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
@@ -9,7 +9,10 @@ class MusicPlayerView extends StatefulWidget {
   _MusicPlayerView(Object fileName) {
     throw UnimplementedError();
   }
-  const MusicPlayerView(FileSystemEntity file, {Key? key, required this.fileName}) : super(key: key);
+
+  const MusicPlayerView(FileSystemEntity file,
+      {Key? key, required this.fileName})
+      : super(key: key);
 
   @override
   State<MusicPlayerView> createState() => _MusicPlayerViewState(fileName);
@@ -18,7 +21,7 @@ class MusicPlayerView extends StatefulWidget {
 class _MusicPlayerViewState extends State<MusicPlayerView> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   bool _isPlaying = false;
-  
+
   _MusicPlayerViewState(Object fileName);
 
   @override
@@ -28,11 +31,14 @@ class _MusicPlayerViewState extends State<MusicPlayerView> {
   }
 
   Future<void> _initAudioPlayer() async {
+    print("Init");
+    print(widget.fileName);
     try {
-      // Construir la URI del archivo local
-      Uri fileUri = Uri.file(widget.fileName.toString());
-
-      await _audioPlayer.setAudioSource(AudioSource.uri(fileUri));
+      await _audioPlayer.setAudioSource(
+        AudioSource.uri(
+          Uri.parse(widget.fileName.toString()),
+        ),
+      );
 
       _audioPlayer.playerStateStream.listen((playerState) {
         if (playerState.playing != _isPlaying) {
@@ -55,6 +61,8 @@ class _MusicPlayerViewState extends State<MusicPlayerView> {
 
   @override
   Widget build(BuildContext context) {
+    print("Context");
+    print(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -187,7 +195,23 @@ class _MusicPlayerViewState extends State<MusicPlayerView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildNavItem(Icons.music_note, 'Music'),
+                // _buildNavItem(Icons.music_note, 'Music'),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SongsScreen()),
+                    );
+                  },
+                  child: _buildNavItem(Icons.music_note, 'Music'),
+                  // return const MaterialApp(
+                  //   home: Scaffold(
+                  //     body: Center(
+                  //       child: MusicPlayerView(),
+                  //     ),
+                ),
+
                 _buildNavItem(Icons.favorite_border, 'Favorite'),
                 _buildNavItem(Icons.playlist_play, 'Playlist'),
               ],
